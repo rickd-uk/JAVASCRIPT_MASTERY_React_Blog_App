@@ -125,6 +125,15 @@ export const getCategories = async () => {
 }
 
 export const submitComment = async (obj) => {
-	const result = await fetch('/api/comments', { method: 'POST', body: JSON.stringify(obj) })
+	const result = await fetch('/api/comments', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+			'Access-Control-Allow-Origin': '*',
+			'Access-Control-Allow-Headers': 'X-Requested-With,content-type',
+			'Access-Control-Allow-Credentials': true,
+		},
+		body: JSON.stringify(obj),
+	})
 	return result.json()
 }
