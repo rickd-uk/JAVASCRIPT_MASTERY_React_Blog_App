@@ -10,7 +10,29 @@ const CommentsForm = () => {
 	const emailEl = useRef()
 	const storeDataEl = useRef()
 
-	const handleCommentSubmit = () => {}
+	const handleCommentSubmit = () => {
+		setError(false)
+
+		const { value: comment } = commentEl.current
+		const { value: name } = nameEl.current
+		const { value: email } = emailEl.current
+		const { checked: storeData } = storeDataEl.current
+
+		if (!comment || !name || !email) {
+			setError(true)
+			return
+		}
+
+		const commentObj = { name, email, comment, slug }
+
+		if (storeData) {
+			localStorage.setItem('name', name)
+			localStorage.setItem('email', email)
+		} else {
+			localStorage.removeItem('name', name)
+			localStorage.removeItem('email', email)
+		}
+	}
 
 	return (
 		<div className='bg-white shadow-lg rounded-lg p-8 m-12 mb-8'>
@@ -39,6 +61,14 @@ const CommentsForm = () => {
 					name='email'
 				/>
 
+				<div className='grid grid-cols-1 gap-4 mb-4'>
+					<div>
+						<input ref={storeDataEl} type='checkbox' id='storeData' name='storeData' value='true' />
+						<label className='text-gray-500 cursor-pointer ml-2' htmlFor='storeData'>
+							Save my email and name for the next time
+						</label>
+					</div>
+				</div>
 				{error && <p className='text-xs text-red-500'>All fields are required.</p>}
 				<div className='mt-8'>
 					<button
